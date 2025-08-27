@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>My Tasks</h2>
+<a href="{% url 'task_create' %}" class="btn btn-primary mb-3">Add New Task</a>
+
+{% if tasks %}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Priority</th>
+            <th>Status</th>
+            <th>Due Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for task in tasks %}
+        <tr>
+            <td>{{ task.title }}</td>
+            <td>{{ task.get_priority_display }}</td>
+            <td>{{ task.get_status_display }}</td>
+            <td>{{ task.due_date|default:"-" }}</td>
+            <td>
+                <a href="{% url 'task_update' task.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
+                <a href="{% url 'task_delete' task.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No tasks found. <a href="{% url 'task_create' %}">Create your first task</a></p>
+{% endif %}
+{% endblock %}
